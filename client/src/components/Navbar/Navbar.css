@@ -1,0 +1,9 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 244px;
+  padding-left: 12px;
+  padding-top: 20px;
+  align-items: flex-start;
+}
