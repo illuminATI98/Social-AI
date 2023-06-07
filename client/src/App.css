@@ -13,5 +13,10 @@ body {
   width: 100vw;
 }
 .page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100vh;
+  padding-left: 100px;
+  
 }
