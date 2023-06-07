@@ -2,8 +2,22 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 244px;
-  padding-left: 12px;
+  width: 150px;
+  padding-left: 18px;
+  padding-right: 18px;
   padding-top: 20px;
   align-items: flex-start;
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: rgb(201, 201, 201);
+}
+.navbar-logo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 20px;
+}
+img{
+  max-width: 50%;
 }
