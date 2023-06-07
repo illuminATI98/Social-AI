@@ -1,0 +1,16 @@
+.create-post{
+  display: flex;
+  flex-direction: column;
+}
+
+h1{
+  font-size: 25px;
+}
+
+p{
+  font-size: 12px;
+}
+.create-post form{
+  display: flex;
+  flex-direction: column;
+}
