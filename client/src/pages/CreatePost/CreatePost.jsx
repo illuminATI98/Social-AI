@@ -17,9 +17,31 @@ const CreatePost = () => {
      return {...prev, ...value}});
   };
 
-  function handleCreateImage(e){
+  async function handleCreateImage(e){
     e.preventDefault();
+    if(form.prompt){
+      try{
+        setGeneratingImg(true);
+        const response = await fetch("https://localhost:44333/GenerateAIImage", {
+          method: "POST",
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(form.prompt),
+        })
 
+        const data = await response.json()
+
+        updateForm({img:data[0]});
+      } catch (error) {
+        alert(error);
+      }finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      alert("Please enter a prompt");
+    }
   };
 
   function handleSubmit(e){
@@ -40,7 +62,7 @@ const CreatePost = () => {
         onChange={(e) => updateForm({prompt:e.target.value})}
         />
 
-        <button className='create-post-button' onChange={handleCreateImage}>Create image</button>
+        <button className='create-post-button' onClick={handleCreateImage}>Create image</button>
 
         {form.img ? (
           <img
