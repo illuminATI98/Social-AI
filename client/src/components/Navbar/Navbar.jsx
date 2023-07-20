@@ -13,7 +13,7 @@ const Navbar = () => {
       </div>
       <div className='navbar-create'>
         <Link to="/create-post">
-          Create
+          <button className='navbar-create-btn'>Create</button>
         </Link>
       </div>
     </div>
