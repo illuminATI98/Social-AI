@@ -6,66 +6,73 @@ namespace Social_AI.Services;
 
 public class UserService : IService<User>
 {
-    private SocialAIContext _Context { get; set; }
-    private PasswordHasher<User> _PasswordHasher { get; set; }
+    private SocialAiContext _context { get; set; }
+    private PasswordHasher<User> _hasher { get; set; }
 
-    public UserService(SocialAIContext context, PasswordHasher<User> passwordHasher)
+    public UserService(SocialAiContext context, PasswordHasher<User> hasher)
     {
-        _Context = context;
-        _PasswordHasher = passwordHasher;
+        _context = context;
+        _hasher = hasher;
     }
     
     
     public async Task Add(User entity)
     {
-       await _Context.Users.AddAsync(entity);
-       await _Context.SaveChangesAsync();
+       await _context.Users.AddAsync(entity);
+       await _context.SaveChangesAsync();
     }
 
     public async Task<User?> Get(long id)
     {
-        return await _Context.Users.FirstOrDefaultAsync(u => u.ID == id);
+        return await _context.Users.FirstOrDefaultAsync(u => u.ID == id);
     }
 
     public async Task<IEnumerable<User>> GetAll()
     {
-        return await _Context.Users.ToListAsync();
+        return await _context.Users.ToListAsync();
     }
 
     public async Task Update(User entity)
     {
-        var user = await _Context.Users.FindAsync(entity.ID);
+        var user = await _context.Users.FindAsync(entity.ID);
         if (user != null)
         {
             user.Name = entity.Name;
             user.Password = entity.Password;
             user.Email = entity.Email;
             user.Role = entity.Role;
-            await _Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 
     public async Task Delete(long id)
     {
-        var user = await _Context.Users.FindAsync(id);
+        var user = await _context.Users.FindAsync(id);
         if (user != null)
         {
-            _Context.Users.Remove(user);
-            await _Context.SaveChangesAsync();
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
     }
     
     public async Task<User?> GetByLogin(string email, string password)
     {
-        var user = await _Context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         if (user != null)
         {
-            var result = _PasswordHasher.VerifyHashedPassword(user, user.Password, password);
+            var result = _hasher.VerifyHashedPassword(user, user.Password, password);
             if (result == PasswordVerificationResult.Success)
             {
                 return user;
             }
         }
         return null;
+    }
+
+    public bool UserExistsByEmail(string email)
+    {
+        var exists = _context.Users.Any(u => u.Email == email);
+
+        return exists;
     }
 }
