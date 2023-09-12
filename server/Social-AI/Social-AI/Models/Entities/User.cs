@@ -14,11 +14,13 @@ public class User
     public string Email { get; set; }
 
     public byte[]? Picture { get; set; }
+
+    public string Description { get; set; }
     public string Role { get; set; }
 
     public virtual ICollection<Post>? Posts { get; set; } = new List<Post>();
 
-    public virtual ICollection<Post> LikedPosts { get; set; } = new List<Post>();
+    public virtual ICollection<Post> Likes { get; set; } = new List<Post>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
