@@ -4,7 +4,7 @@ using Social_AI.Models.Entities;
 
 namespace Social_AI.Services;
 
-public class UserService : IService<User>
+public class UserService : IUserService
 {
     private SocialAiContext _context { get; set; }
     private PasswordHasher<User> _hasher { get; set; }
@@ -21,7 +21,7 @@ public class UserService : IService<User>
        await _context.Users.AddAsync(entity);
        await _context.SaveChangesAsync();
     }
-
+    
     public async Task<User?> Get(long id)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.ID == id);
@@ -40,13 +40,14 @@ public class UserService : IService<User>
             user.Name = entity.Name;
             user.Password = entity.Password;
             user.Email = entity.Email;
-            user.Role = entity.Role;
+            user.Picture = entity.Picture;
+            user.Description = entity.Description;
             await _context.SaveChangesAsync();
         }
     }
 
     public async Task Delete(long id)
-    {
+    { 
         var user = await _context.Users.FindAsync(id);
         if (user != null)
         {
@@ -71,8 +72,11 @@ public class UserService : IService<User>
 
     public bool UserExistsByEmail(string email)
     {
-        var exists = _context.Users.Any(u => u.Email == email);
+        return _context.Users.Any(u => u.Email == email);
+    }
 
-        return exists;
+    public bool UserExistsById(long id)
+    {
+        return _context.Users.Any(u => u.ID == id);
     }
 }
