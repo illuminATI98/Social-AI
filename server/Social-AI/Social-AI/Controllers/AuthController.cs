@@ -15,10 +15,10 @@ namespace Social_AI.Controllers;
 public class AuthController : ControllerBase
 {
         private readonly IConfiguration _configuration;
-        private readonly UserService _service;
+        private readonly IUserService _service;
         private readonly PasswordHasher<User> _hasher;
 
-        public AuthController(IConfiguration configuration, UserService service, PasswordHasher<User> hasher)
+        public AuthController(IConfiguration configuration, IUserService service, PasswordHasher<User> hasher)
         {
             _configuration = configuration;
             _service = service;
@@ -27,9 +27,9 @@ public class AuthController : ControllerBase
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDTO Dto)
+        public async Task<ActionResult> Register(RegisterDTO dto)
         {
-            bool userExists = _service.UserExistsByEmail(Dto.Email);
+            bool userExists = _service.UserExistsByEmail(dto.Email);
             
             if (userExists)
             {
@@ -38,11 +38,11 @@ public class AuthController : ControllerBase
             
             User user = new User()
             {
-                Email = Dto.Email,
-                Name = Dto.Name,
+                Email = dto.Email,
+                Name = dto.Name,
                 Role = "User"
             };
-            var hashedPassword = _hasher.HashPassword(user, Dto.Password);
+            var hashedPassword = _hasher.HashPassword(user, dto.Password);
             user.Password = hashedPassword;
             await _service.Add(user);
             
@@ -51,9 +51,9 @@ public class AuthController : ControllerBase
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<LoginResultDTO>> Login(LoginDTO Dto)
+        public async Task<ActionResult<LoginResultDTO>> Login(LoginDTO dto)
         {
-            var user = await _service.GetByLogin(Dto.Email, Dto.Password);
+            var user = await _service.GetByLogin(dto.Email, dto.Password);
 
             if (user == null)
             {
