@@ -28,7 +28,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<SocialAiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IUserService>();
+
+builder.Services.AddScoped<IPostService>();
 
 builder.Services.AddScoped<PasswordHasher<User>>();
 
@@ -44,9 +46,32 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecretKey"]))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["jwtcookie"];
+            return Task.CompletedTask;
+        }
+    };
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<SocialAiContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception exception)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(exception, "An error occurred while migrating the database.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
