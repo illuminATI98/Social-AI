@@ -18,7 +18,7 @@ public class AuthController : ControllerBase
         private readonly IUserService _service;
         private readonly PasswordHasher<User> _hasher;
 
-        public AuthController(IConfiguration configuration, IUserService service, PasswordHasher<User> hasher)
+        public AuthController(IConfiguration configuration, UserService service, PasswordHasher<User> hasher)
         {
             _configuration = configuration;
             _service = service;
@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDTO dto)
+        public async Task<IActionResult> Register(RegisterDTO dto)
         {
             bool userExists = _service.UserExistsByEmail(dto.Email);
             
@@ -40,7 +40,8 @@ public class AuthController : ControllerBase
             {
                 Email = dto.Email,
                 Name = dto.Name,
-                Role = "User"
+                Role = "User",
+                Description = ""
             };
             var hashedPassword = _hasher.HashPassword(user, dto.Password);
             user.Password = hashedPassword;
