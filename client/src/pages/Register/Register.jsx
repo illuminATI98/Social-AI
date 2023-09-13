@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Register = () => {
+const Register = ({onRegister}) => {
   const [formData, setFormData] = useState({
     email: '',
     name:'',
@@ -12,21 +12,27 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Here, you can make an API call to your backend authentication endpoint
-    // Send 'formData.username' and 'formData.password' to authenticate the user
-    // Upon successful login, you can store the received JWT token in the browser's localStorage or sessionStorage
-
-    // For demo purposes, let's just log the form data
-    console.log(formData);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    let response = await fetch(`https://localhost:44333/register`, {
+      method: "POST",
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
+      })
+    })
+    let result = await response.json();
+    console.log(result);
   };
 
   return (
     <div>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label htmlFor="name">Name:</label>
           <input
@@ -57,7 +63,7 @@ const Register = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Register</button>
+        <button onClick={handleRegister}>Register</button>
       </form>
     </div>
   );
