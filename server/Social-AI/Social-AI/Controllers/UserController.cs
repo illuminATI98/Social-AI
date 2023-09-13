@@ -11,24 +11,24 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _service;
 
-    public UserController(IUserService userService)
+    public UserController(UserService userService)
     {
         _service = userService;
     }
     
-    [HttpGet("/{id}")]
+    [HttpGet("/users/{id}")]
     public Task<User> Get(long id)
     {
         return _service.Get(id);
     }
     
-    [HttpGet]
+    [HttpGet("/users")]
     public async Task<IEnumerable<User>> GetAllUser()
     {
         return await _service.GetAll();
     }
     
-    [HttpPut("/update/{id}")]
+    [HttpPut("/users/update/{id}")]
     public async Task UpdateUser(long id, [FromBody] User user)
     {
         if (_service.UserExistsById(id))
@@ -37,7 +37,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpDelete("/delete/{id}")]
+    [HttpDelete("/users/delete/{id}")]
     public async Task DeleteUser(long id)
     {
         await _service.Delete(id);
