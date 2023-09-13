@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     [HttpGet("/users/{id}")]
     public Task<User> Get(long id)
     {
-        return _service.Get(id);
+        return _service.GetUserById(id);
     }
     
     [HttpGet("/users")]

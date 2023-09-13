@@ -6,7 +6,7 @@ public interface IUserService
 {
     public Task Add(User entity);
     
-    public Task<User> Get(long id);
+    public Task<User> GetUserById(long id);
     
     public Task<IEnumerable<User>> GetAll();
     

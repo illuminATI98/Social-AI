@@ -22,7 +22,7 @@ public class UserService : IUserService
        await _context.SaveChangesAsync();
     }
     
-    public async Task<User> Get(long id)
+    public async Task<User> GetUserById(long id)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.ID == id);
     }
