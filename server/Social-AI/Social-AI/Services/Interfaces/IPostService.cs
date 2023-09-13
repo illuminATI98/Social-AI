@@ -7,13 +7,13 @@ public interface IPostService
 {
     public Task Add(Post entity, long userId);
     
-    public Task<Post> Get(long id);
+    public Task<Post> Get(long postId);
     
     public Task<IEnumerable<Post>> GetAll();
 
     public Task<IEnumerable<Post>> GetUserPosts(long userId);
     
-    public Task Update(Post entity);
+    public Task Update(long postId,string description);
     
-    public Task Delete(long id);
+    public Task Delete(long postId);
 }

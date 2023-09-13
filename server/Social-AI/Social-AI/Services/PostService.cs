@@ -41,12 +41,12 @@ public class PostService : IPostService
         return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
     }
 
-    public async Task Update(Post entity)
+    public async Task Update(long postId,string description)
     {
-        var post = await _context.Posts.FindAsync(entity.ID);
+        var post = await _context.Posts.FindAsync(postId);
         if (post != null)
         {
-            post.Description = entity.Description;
+            post.Description = description;
             await _context.SaveChangesAsync();
         }
     }
