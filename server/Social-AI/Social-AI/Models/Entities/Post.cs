@@ -10,16 +10,15 @@ public class Post
     public long UserId { get; set; }
 
     public User User { get; set; }
-
+    
     public string Prompt { get; set; }
 
     public string Image { get; set; }
-
     public string Description { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    public ICollection<Like> Likes { get; set; } = new List<Like>();
+    public virtual ICollection<Like?> Likes { get; set; } 
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comment?> Comments { get; set; } 
 }

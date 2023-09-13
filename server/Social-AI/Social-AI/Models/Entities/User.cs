@@ -18,11 +18,7 @@ public class User
     public string Description { get; set; }
     public string Role { get; set; }
 
-    public virtual ICollection<Post>? Posts { get; set; } = new List<Post>();
-
-    public virtual ICollection<Post> Likes { get; set; } = new List<Post>();
-
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-
+    public virtual ICollection<Post?> Posts { get; set; } 
+    
+    public virtual ICollection<Comment?> Comments { get; set; }
 }
