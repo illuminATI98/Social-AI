@@ -13,15 +13,8 @@ public class PostService : IPostService
         _context = context;
     }
     
-    public async Task Add(Post entity, long userId)
+    public async Task Add(Post entity)
     {
-        var user = _context.Users.FirstOrDefault(u => u.ID == userId);
-
-        if (user == null)
-        {
-            return;
-        }
-
         _context.Posts.Add(entity);
         await _context.SaveChangesAsync();
     }

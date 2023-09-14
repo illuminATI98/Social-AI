@@ -40,7 +40,7 @@ public class PostController : ControllerBase
             Description = postDto.Description,
             Image = postDto.Image
         };
-        await _postService.Add(newPost, userId);
+        await _postService.Add(newPost);
         
         return Ok(newPost);
     }

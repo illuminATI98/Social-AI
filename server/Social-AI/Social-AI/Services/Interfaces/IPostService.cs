@@ -5,7 +5,7 @@ namespace Social_AI.Services;
 
 public interface IPostService 
 {
-    public Task Add(Post entity, long userId);
+    public Task Add(Post entity);
     
     public Task<Post> Get(long postId);
     
