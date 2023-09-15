@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Social_AI.Models.DTOs;
 using Social_AI.Models.Entities;
 using Social_AI.Services;
 
@@ -17,9 +19,9 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("/users/{id}")]
-    public Task<User> Get(long id)
+    public async Task<IActionResult> Get(long id)
     {
-        return _service.GetUserById(id);
+        return Ok(_service.GetUserById(id));
     }
     
     [HttpGet("/users")]
@@ -29,17 +31,30 @@ public class UserController : ControllerBase
     }
     
     [HttpPut("/users/update/{id}")]
-    public async Task UpdateUser(long id, [FromBody] User user)
+    public async Task<IActionResult> UpdateUser([FromBody] EditUserDTO userDto)
     {
-        if (_service.UserExistsById(id))
+        var userId = GetUserIdFromToken();
+        if (_service.UserExistsById(userId))
         {
-            await _service.Update(user);
+            await _service.Update(userId,userDto);
+            return Ok();
         }
+
+        return BadRequest("User not found");
     }
     
     [HttpDelete("/users/delete/{id}")]
     public async Task DeleteUser(long id)
     {
         await _service.Delete(id);
+    }
+    
+    [NonAction] 
+    private long GetUserIdFromToken()
+    {
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId != null)
+            return long.Parse(userId);
+        return 0;
     }
 }
