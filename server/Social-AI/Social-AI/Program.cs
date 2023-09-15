@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,12 +8,16 @@ using Microsoft.IdentityModel.Tokens;
 using Social_AI;
 using Social_AI.Models.Entities;
 using Social_AI.Services;
+using Social_AI.Services.ImageDownloader;
 using Social_AI.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});;
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -34,6 +39,8 @@ builder.Services.AddDbContext<SocialAiContext>(options =>
 builder.Services.AddScoped<UserService>();
 
 builder.Services.AddScoped<PostService>();
+
+builder.Services.AddScoped<ImageDownloader>();
 
 builder.Services.AddScoped<PasswordHasher<User>>();
 
