@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import "./Navbar.css";
+import "./Navbar.scss";
 import Logo from "../../assets/logo.png";
-import jwt_decode from "jwt-decode";
+
 
 const Navbar = ({ handleLogout, user }) => {
-  const jwtToken = localStorage.getItem("jwtToken");
   
   return (
     <div className='navbar'>
