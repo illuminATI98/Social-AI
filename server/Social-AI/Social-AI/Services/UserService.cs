@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Social_AI.Models.DTOs;
 using Social_AI.Models.Entities;
 
 namespace Social_AI.Services;
@@ -32,16 +33,15 @@ public class UserService : IUserService
         return await _context.Users.ToListAsync();
     }
 
-    public async Task Update(User entity)
+    public async Task Update(long userId, EditUserDTO userDto)
     {
-        var user = await _context.Users.FindAsync(entity.ID);
+        User user = await GetUserById(userId);
         if (user != null)
         {
-            user.Name = entity.Name;
-            user.Password = entity.Password;
-            user.Email = entity.Email;
-            user.Picture = entity.Picture;
-            user.Description = entity.Description;
+            user.Name = userDto.Name;
+            user.Password = userDto.Password;
+            user.Picture = userDto.Picture;
+            user.Description = userDto.Description;
             await _context.SaveChangesAsync();
         }
     }

@@ -1,3 +1,4 @@
+using Social_AI.Models.DTOs;
 using Social_AI.Models.Entities;
 
 namespace Social_AI.Services;
@@ -10,7 +11,7 @@ public interface IUserService
     
     public Task<IEnumerable<User>> GetAll();
     
-    public Task Update(User entity);
+    public Task Update(long userId, EditUserDTO userDto);
     
     public Task Delete(long id);
     bool UserExistsByEmail(string email);
