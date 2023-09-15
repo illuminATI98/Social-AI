@@ -1,7 +1,7 @@
 import Navbar from "./Navbar/Navbar";
-import Post from "./Post/Post";
+import PostCard from "./PostCard/PostCard";
 
 export {
   Navbar,
-  Post
+  PostCard
 }
