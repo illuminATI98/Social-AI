@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { PropagateLoader } from "react-spinners";
-import "./CreatePost.css";
+import "./CreatePost.scss";
 import preview from "../../assets/preview.jpg";
+import { BACKEND_API_URL } from '../../url';
+import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie';
 
 const CreatePost = () => {
+  const [user, setUser] = useState(null);
+  const [jwtToken, setJwtToken] = useState(null);
   const [form, setForm] = useState({
     prompt:"",
-    description:"",
-    img:""
+    image:"",
+    description:""
   });
-
   const [generatingImg, setGeneratingImg] = useState(false);
+
+  useEffect(() => {
+    try {
+      const token = Cookies.get("jwtToken");
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        setUser(decodedToken);
+        setJwtToken(token);
+        console.log(token)
+      }
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  }, []);
 
   function updateForm(value) {
     return setForm( (prev)=> {
@@ -22,18 +40,19 @@ const CreatePost = () => {
     if(form.prompt){
       try{
         setGeneratingImg(true);
-        const response = await fetch("https://localhost:44333/GenerateAIImage", {
+        const response = await fetch(`${BACKEND_API_URL}/api/GenerateAIImage`, {
           method: "POST",
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
           },
-          body: JSON.stringify(form.prompt),
+          body: JSON.stringify(form.prompt)
         })
 
         const data = await response.json()
-
-        updateForm({img:data[0]});
+        console.log(data)
+        updateForm({image:data['$values'][0]}); 
       } catch (error) {
         alert(error);
       }finally {
@@ -41,6 +60,28 @@ const CreatePost = () => {
       }
     } else {
       alert("Please enter a prompt");
+    }
+  };
+
+  async function handlePost(e){
+    e.preventDefault();
+    if(form.image){
+      try{
+        const response = await fetch(`${BACKEND_API_URL}/api/posts`, {
+          method: "POST",
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
+          },
+          body: JSON.stringify(form)
+        })
+
+      } catch (error) {
+        alert(error);
+      }
+    } else {
+      alert("Please generate image");
     }
   };
 
@@ -64,28 +105,40 @@ const CreatePost = () => {
 
         <button className='create-post-button' onClick={handleCreateImage}>Create image</button>
 
-        {form.img ? (
-          <img
-            src={form.img}
-            alt={form.prompt}
-            className='create-post-img'
-          />
-        ): (
-          <img
-            src={preview}
-            alt="preview"
-            className='create-post-img'
-          />
-        )}
-
-        {generatingImg && (
-          <div>
-            <PropagateLoader
-              color="#36d7b7"
-              loading
+        {form.image ? (
+          <div className='create-post-img-container'>
+            {generatingImg && (
+              <div className='create-post-loader'>
+                <PropagateLoader
+                  color="#36d7b7"
+                  loading
+                />
+              </div>
+            )}
+            <img
+              src={form.image}
+              alt={form.prompt}
+              className='create-post-img'
             />
           </div>
+        ): (
+          <>
+            {generatingImg && (
+              <div className='create-post-loader'>
+                <PropagateLoader
+                  color="#36d7b7"
+                  loading
+                />
+              </div>
+            )}
+            <img
+              src={preview}
+              alt="preview"
+              className='create-post-img'
+            />
+          </>
         )}
+
         <label htmlFor="description">Description</label>
         <input 
         type="text"
@@ -94,6 +147,8 @@ const CreatePost = () => {
         value={form.description}
         onChange={(e) => updateForm({description:e.target.value})}
         />
+
+        <button className='create-post-button' onClick={handlePost}>Post image</button>
 
       </form>
     </div>
