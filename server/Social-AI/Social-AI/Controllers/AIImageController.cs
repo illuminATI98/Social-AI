@@ -14,7 +14,7 @@ public class AIImageController : ControllerBase
         APIKEY = conf.GetSection("OPENAI_API_KEY").Value;
     }
     
-    [Route("GenerateAIImage")]
+    [Route("/api/GenerateAIImage")]
     [HttpPost]
     public async Task<IActionResult> GenerateAIImage([FromBody] string prompt)
     {
