@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using Social_AI.Models.DTOs;
-
-namespace Social_AI.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Social_AI.Models.Entities;
 using Social_AI.Services;
+
+namespace Social_AI.Controllers;
 
 [Authorize]
 [ApiController, Route("/api/posts")]
@@ -38,23 +38,26 @@ public class PostController : ControllerBase
             User = user,
             Prompt = postDto.Prompt,
             Description = postDto.Description,
-            Image = postDto.Image
+            Image = postDto.Image,
+            CreatedAt = DateTime.UtcNow
         };
         await _postService.Add(newPost);
         
-        return Ok(newPost);
+        return Ok();
     }
     
     [HttpGet("/api/posts/{postId}")]
-    public IActionResult Get(long postId)
+    public async Task<IActionResult> Get(long postId)
     {
-        return Ok(_postService.Get(postId));
+        var post = await _postService.Get(postId);
+        return Ok(post);
     }
     
     [HttpGet("/api/posts")]
-    public IActionResult GetAllPosts()
+    public async Task<IActionResult> GetAllPosts()
     {
-        return Ok(_postService.GetAll());
+        var posts = await _postService.GetAll();
+        return Ok(posts);
     }
     
     [HttpPut("/api/posts/update/{postId}")]
@@ -82,7 +85,8 @@ public class PostController : ControllerBase
         return Ok();
     }
     
-    public long GetUserIdFromToken()
+    [NonAction] 
+    private long GetUserIdFromToken()
     {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId != null)
