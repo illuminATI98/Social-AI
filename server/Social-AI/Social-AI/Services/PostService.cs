@@ -19,9 +19,9 @@ public class PostService : IPostService
         await _context.SaveChangesAsync();
     }
     
-    public async Task<Post> Get(long id)
+    public async Task<Post> Get(long postId)
     {
-        return await _context.Posts.FirstOrDefaultAsync(p => p.ID == id);
+        return await _context.Posts.FindAsync(postId);
     }
 
     public async Task<IEnumerable<Post>> GetAll()
@@ -36,7 +36,7 @@ public class PostService : IPostService
 
     public async Task Update(long postId,string description)
     {
-        var post = await _context.Posts.FindAsync(postId);
+        var post = await Get(postId);
         if (post != null)
         {
             post.Description = description;
@@ -44,9 +44,9 @@ public class PostService : IPostService
         }
     }
 
-    public async Task Delete(long id)
+    public async Task Delete(long postId)
     {
-        var post = await _context.Posts.FindAsync(id);
+        var post = await Get(postId);
         if (post != null)
         {
             _context.Posts.Remove(post);
