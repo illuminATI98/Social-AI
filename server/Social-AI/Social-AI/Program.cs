@@ -36,9 +36,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<SocialAiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<ISocialAiContext, SocialAiContext>();
+
 builder.Services.AddScoped<UserService>();
 
 builder.Services.AddScoped<PostService>();
+
+builder.Services.AddScoped<CommentService>();
 
 builder.Services.AddScoped<ImageDownloader>();
 
