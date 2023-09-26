@@ -39,7 +39,7 @@ public class PostController : ControllerBase
             Prompt = postDto.Prompt,
             Description = postDto.Description,
             Image = postDto.Image,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.Now
         };
         await _postService.Add(newPost);
         
