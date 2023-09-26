@@ -7,10 +7,10 @@ namespace Social_AI.Services;
 
 public class UserService : IUserService
 {
-    private SocialAiContext _context { get; set; }
+    private ISocialAiContext _context { get; set; }
     private PasswordHasher<User> _hasher { get; set; }
 
-    public UserService(SocialAiContext context, PasswordHasher<User> hasher)
+    public UserService(ISocialAiContext context, PasswordHasher<User> hasher)
     {
         _context = context;
         _hasher = hasher;
@@ -25,7 +25,7 @@ public class UserService : IUserService
     
     public async Task<User> GetUserById(long id)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.ID == id);
+        return await _context.Users.FindAsync(id);
     }
 
     public async Task<IEnumerable<User>> GetAll()
@@ -47,8 +47,8 @@ public class UserService : IUserService
     }
 
     public async Task Delete(long id)
-    { 
-        var user = await _context.Users.FindAsync(id);
+    {
+        var user = await GetUserById(id);
         if (user != null)
         {
             _context.Users.Remove(user);
