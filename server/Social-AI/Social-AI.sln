@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social-AI", "Social-AI\Social-AI.csproj", "{EF773BB9-F23E-4B76-BFAD-B34E1A2B04EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social-AI.Tests", "Social-AI.Tests\Social-AI.Tests.csproj", "{AC5A431A-6B83-4B2C-BFD2-1FED78FEEA52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{EF773BB9-F23E-4B76-BFAD-B34E1A2B04EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF773BB9-F23E-4B76-BFAD-B34E1A2B04EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF773BB9-F23E-4B76-BFAD-B34E1A2B04EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5A431A-6B83-4B2C-BFD2-1FED78FEEA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC5A431A-6B83-4B2C-BFD2-1FED78FEEA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC5A431A-6B83-4B2C-BFD2-1FED78FEEA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC5A431A-6B83-4B2C-BFD2-1FED78FEEA52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
