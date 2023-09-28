@@ -11,9 +11,9 @@ public interface IUserService
     
     public Task<IEnumerable<User>> GetAll();
     
-    public Task Update(long userId, EditUserDTO userDto);
+    public Task<bool> Update(long userId, EditUserDTO userDto);
     
-    public Task Delete(long id);
+    public Task<bool> Delete(long id);
     bool UserExistsByEmail(string email);
     Task<User> GetByLogin(string email, string password);
     bool UserExistsById(long id);

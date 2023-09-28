@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Social_AI.Models.DTOs;
@@ -33,7 +34,7 @@ public class UserService : IUserService
         return await _context.Users.ToListAsync();
     }
 
-    public async Task Update(long userId, EditUserDTO userDto)
+    public async Task<bool> Update(long userId, EditUserDTO userDto)
     {
         User user = await GetUserById(userId);
         if (user != null)
@@ -43,17 +44,22 @@ public class UserService : IUserService
             user.Picture = userDto.Picture;
             user.Description = userDto.Description;
             await _context.SaveChangesAsync();
+            return true;
         }
+        return false;
     }
 
-    public async Task Delete(long id)
+    public async Task<bool> Delete(long id)
     {
         var user = await GetUserById(id);
         if (user != null)
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+            return true;
         }
+
+        return false;
     }
     
     public async Task<User?> GetByLogin(string email, string password)
