@@ -34,23 +34,27 @@ public class PostService : IPostService
         return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
     }
 
-    public async Task Update(long postId,string description)
+    public async Task<bool> Update(long postId,string description)
     {
         var post = await Get(postId);
         if (post != null)
         {
             post.Description = description;
             await _context.SaveChangesAsync();
+            return true;
         }
+        return false;
     }
 
-    public async Task Delete(long postId)
+    public async Task<bool> Delete(long postId)
     {
         var post = await Get(postId);
         if (post != null)
         {
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
+            return true;
         }
+        return false;
     }
 }

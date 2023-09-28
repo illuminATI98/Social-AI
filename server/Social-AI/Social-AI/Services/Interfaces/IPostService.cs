@@ -13,7 +13,7 @@ public interface IPostService
 
     public Task<IEnumerable<Post>> GetUserPosts(long userId);
     
-    public Task Update(long postId,string description);
+    public Task<bool> Update(long postId,string description);
     
-    public Task Delete(long postId);
+    public Task<bool> Delete(long postId);
 }
