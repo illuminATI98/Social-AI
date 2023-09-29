@@ -119,7 +119,20 @@ public class PostServiceTests
     }
     
     [Fact]
-    public async Task UserService_GetUserPosts_ReturnsListOfPostByUser()
+    public async Task PostService_GetUserPosts_ReturnsListOfPostsByUserId()
+    {
+        var postService = await SetupPostService();
+        long userId = 1;
+        
+        var result = await postService.GetUserPosts(userId);
+        
+        result.Should().NotBeNull();
+        result.Should().BeOfType<List<Post>>();
+        result.Count().Should().Be(5);
+    }
+    
+    [Fact]
+    public async Task PostService_GetAll_ReturnsListOfPosts()
     {
         var postService = await SetupPostService();
         long userId = 1;
