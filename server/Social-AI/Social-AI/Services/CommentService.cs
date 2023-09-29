@@ -28,23 +28,29 @@ public class CommentService : ICommentService
         return await _context.Comments.Where(c => c.PostId == postId).ToListAsync();
     }
 
-    public async Task Update(long commentId, string text)
+    public async Task<bool> Update(long commentId, string text)
     {
         var comment = await Get(commentId);
         if (comment != null)
         {
             comment.Text = text;
             await _context.SaveChangesAsync();
+            return true;
         }
+
+        return false;
     }
 
-    public async Task Delete(long commentId)
+    public async Task<bool> Delete(long commentId)
     {
         var comment = await Get(commentId);
         if (comment != null)
         {
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
+            return true;
         }
+
+        return false;
     }
 }

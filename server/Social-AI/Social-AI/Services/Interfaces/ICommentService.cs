@@ -10,7 +10,7 @@ public interface ICommentService
     
     public Task<IEnumerable<Comment>> GetAllPostComments(long postId);
 
-    public Task Update(long commentId,string text);
+    public Task<bool> Update(long commentId,string text);
     
-    public Task Delete(long commentId);
+    public Task<bool> Delete(long commentId);
 }
