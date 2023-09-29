@@ -6,9 +6,9 @@ namespace Social_AI.Services;
 
 public class PostService : IPostService
 {
-    private SocialAiContext _context { get; set; }
+    private ISocialAiContext _context { get; set; }
 
-    public PostService(SocialAiContext context)
+    public PostService(ISocialAiContext context)
     {
         _context = context;
     }
