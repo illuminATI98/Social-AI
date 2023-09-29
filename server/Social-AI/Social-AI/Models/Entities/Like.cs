@@ -2,7 +2,7 @@ namespace Social_AI.Models.Entities;
 
 public class Like
 {
-    public long Id { get; set; }
+    public long ID { get; set; }
     
     public long UserId { get; set; }
 
