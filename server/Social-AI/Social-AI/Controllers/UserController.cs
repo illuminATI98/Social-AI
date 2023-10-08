@@ -30,10 +30,11 @@ public class UserController : ControllerBase
         return await _service.GetAll();
     }
     
-    [HttpPut("/users/update/{id}")]
+    [HttpPut("/users/update")]
     public async Task<IActionResult> UpdateUser([FromBody] EditUserDTO userDto)
     {
         var userId = GetUserIdFromToken();
+        
         if (_service.UserExistsById(userId))
         {
             await _service.Update(userId,userDto);
