@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Social_AI.Models.Entities;
 using Social_AI.Services;
 using FluentAssertions;
