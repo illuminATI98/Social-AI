@@ -103,7 +103,7 @@ public class UserControllerTests
         Assert.Equal(HttpStatusCode.OK,result.StatusCode);
     }
     [Fact]
-    public async Task UserController_Update_ReturnsWhenWrongBodyPassed()
+    public async Task UserController_Update_ReturnsBadRequestWhenWrongBodyPassed()
     {
         var client = _factory.CreateClient();
 
