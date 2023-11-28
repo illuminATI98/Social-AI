@@ -39,8 +39,9 @@ public class UserService : IUserService
         User user = await GetUserById(userId);
         if (user != null)
         {
+            var hashedPassword = _hasher.HashPassword(user, userDto.Password);
+            user.Password = hashedPassword;
             user.Name = userDto.Name;
-            user.Password = userDto.Password;
             user.Picture = userDto.Picture;
             user.Description = userDto.Description;
             await _context.SaveChangesAsync();
